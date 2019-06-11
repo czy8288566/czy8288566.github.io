@@ -1,3 +1,4 @@
+<!doctype html>
 <html>
   <head>
     <meta charset="utf-8">
@@ -202,5 +203,22 @@ end
       </footer>
     </div>
     <script src="javascripts/scale.fix.js"></script>
-  </body>
+  
+		<script type="text/javascript">
+      window.addEventListener("load", function fly_performance_report(event){
+        setTimeout(function(){
+          var sMatch = (' '+document.cookie).match(new RegExp('[; ]flyio_request_id=([^\\s;]*)'));
+          var originalRequestId = sMatch ? unescape(sMatch[1]) : false;
+          if (!originalRequestId) return
+
+          var req = new window.XMLHttpRequest
+          req.open('POST', "/__fly/middleware/render-performance/", true);
+          req.setRequestHeader('Content-Type', 'application/json');
+          req.setRequestHeader('Original-Request-Id', originalRequestId);
+          req.setRequestHeader('Original-Method', 'GET');
+          req.setRequestHeader('Original-Uri', 'https://orderedlist.com/minimal/');
+          req.send(JSON.stringify(performance.timing));
+        }, 0);
+      },false);
+    </script></body>
 </html>
